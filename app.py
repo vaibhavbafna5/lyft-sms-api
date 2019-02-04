@@ -7,4 +7,4 @@ cors = CORS(app)
 
 @app.route("/", methods=['GET'])
 def say_hi():
-    return "Hello."
+    return jsonify({"response": "Hello."})
