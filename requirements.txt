@@ -1,4 +1,7 @@
+Flask_Cors==3.0.6
+twilio==6.24.0
 requests==2.18.4
 Flask==0.12.2
-Flask_Cors==3.0.6
+lyft_rides==0.2
+PyYAML==3.13
 gunicorn==19.9.0
