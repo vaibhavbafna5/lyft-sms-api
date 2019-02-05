@@ -39,7 +39,7 @@ def say_hi():
 
 @app.route("/sms", methods=['GET', 'POST'])
 def sms_ahoy_reply():
-    """Respond to incoming messages with a friendly SMS."""
+    """Hi cutie."""
     # Start our response
     resp = MessagingResponse()
     resp.message("Responses are working")
