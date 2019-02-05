@@ -27,12 +27,11 @@ oauth2 = OAuth2Credential(
 session = Session(oauth2)
 client = LyftRidesClient(session)
 
-@app.route("/ridetypes", methods=['GET'])
+@app.route("/bio", methods=['GET'])
 def get_ridetypes(): 
-    response = client.get_ride_types(47.6, -122)
-    ride_types = response.json.get('ride_types')
-    print(ride_types[0])
-    return jsonify({'ride_types': ride_types})
+    response = client.get_user_profile()
+    print(response)
+    return jsonify({'response': 'success'})
 
 @app.route("/", methods=['GET'])
 def say_hi():

@@ -1,12 +1,12 @@
-access_token: hLxq/6T6uoSGc7oig8sSw4pyDnkKwp4Zpf9NQKcqH2Hqj4tGl0GKu7COH6dA5iDOgD7QpYHU/5hxogfoIwqH/VvYPVFYk38K3T+JoJwkTsSiKsaU8xRBOcI=
+access_token: 8clmLIKm9exk9LtrdB7VW8ltHVucsMsJ3w6Z+pMpXDsS+YAG96RZvElpWUutUnOs09UMz/zfdnx47331UD0bRzKnBt0aa5IuFnq0MY7GFk2O2LvO2INakX4=
 client_id: PxRATSRJrP4l
 client_secret: SANDBOX-ksbAnrp0udSX-XwicMaDf8mdK6f4fRS3
-expires_in_seconds: 1549353309
+expires_in_seconds: 1549359698
 grant_type: authorization_code
-refresh_token: C9lgBRiHN4gkSOEOjME/yVv047DdRzMEwHJmAsSgKbTWlcBSi8Ai+n8M4kaBVCx8TwVBworhtlLsGKW+24jxKw3ZBPupxiy09JE9BeiGLnKD
+refresh_token: VtjgWNFJkdXNwmF045ssiDgODwUB0HCR8e5PEL5w3fVnQgxAQSriI64K9eZa3/VQLdUfCO1zzQ6aeIHFJxZscradwcj2se46ibyyQdPusMI2
 scopes:
-- offline
-- public
 - profile
+- public
 - rides.request
+- offline
 - rides.read
