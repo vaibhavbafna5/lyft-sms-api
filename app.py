@@ -42,5 +42,5 @@ def sms_ahoy_reply():
     """Hi cutie."""
     # Start our response
     resp = MessagingResponse()
-    resp.message("Responses are working")
+    resp.message("Hi cutie")
     return str(resp)
