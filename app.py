@@ -78,6 +78,7 @@ def incoming_sms():
 
         msg = "Your pickup address is: " + address + ". Text \"Dropoff location: <address>\" to continue."
         state = 'pickupLocationEntered'
+        print("HEY STATE HERE: ", state)
 
     if state == 'pickupLocationEntered' and 'Dropoff location:' in body: 
         split_address = body.split('Dropoff location:', 1)
