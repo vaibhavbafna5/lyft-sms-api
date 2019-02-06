@@ -82,6 +82,7 @@ def incoming_sms():
     if state == 'pickupLocationEntered' and 'Dropoff location:' in body: 
         split_address = body.split('Dropoff location:', 1)
         address = split_address[1]
+        print("AYYOO LOOK HERE: ", address)
 
         #get lat long here 
         dropoff_lat_lon = get_lat_lon(address)
