@@ -98,8 +98,6 @@ def incoming_sms():
 
         msg = "Your dropoff address is: " + address + ". Requesting your Lyft now!"
 
-        print(jsonify(ride_request))
-
         response = client.request_ride(
             ride_type="lyft",
             start_latitude=ride_request.start_lat,
