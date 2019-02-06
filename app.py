@@ -60,7 +60,7 @@ def incoming_sms():
 
     # Determine the right reply for this message
     # gets pickup location 
-    
+
     if state == 'justTalking' and 'Pickup location' not in body: 
         msg = "Hey, welcome to Lyft! To start ordering a Lyft, text \"Pickup location: <address>\""
 
@@ -70,7 +70,7 @@ def incoming_sms():
 
         # get lat long here 
         lat_lon = get_lat_lon(address)
-        msg = "Your pickup address is: " + lat_lon[0] + ", " + lat_lon[1] + ". Text \"Dropoff location: <address>\" to continue."
+        msg = "Your pickup address is: " + address + ". Text \"Dropoff location: <address>\" to continue."
         state == 'pickupLocationEntered'
 
     if state == 'pickupLocationEntered' and 'Dropoff location:' in body: 
@@ -79,7 +79,7 @@ def incoming_sms():
 
         #get lat long here 
         lat_lon = get_lat_lon(address)
-        msg = "Your dropoff address is: " + lat_lon[0] + ", " + lat_lon[1] + ". Requesting your Lyft now!"
+        msg = "Your dropoff address is: " + address + ". Requesting your Lyft now!"
         state = 'rideRequested'
     
     resp.message(msg)
