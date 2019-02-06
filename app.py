@@ -93,13 +93,13 @@ def incoming_sms():
         ride_request.end_lat = dropoff_lat_lon[0]
         ride_request.end_lon = dropoff_lat_lon[1]
 
-        response = client.request_ride(
-            ride_type="lyft",
-            start_latitude=37.77,
-            start_longitude=-122.41,
-            end_latitude=37.79,
-            end_longitude=-122.41,
-        )
+        # response = client.request_ride(
+        #     ride_type="lyft",
+        #     start_latitude=ride_request.start_lat,
+        #     start_longitude=ride_request.start_lon,
+        #     end_latitude=ride_request.end_lat,
+        #     end_longitude=-ride_request.end_lon,
+        # )
 
         msg = "Your dropoff address is: " + address + ". Requesting your Lyft now!"
 
