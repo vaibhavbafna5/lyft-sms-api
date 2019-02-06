@@ -71,10 +71,7 @@ def incoming_sms():
 
     # Determine the right reply for this message
 
-    if 'Pickup location' not in body: 
-        msg = "Hey, welcome to Lyft! To start ordering a Lyft, text \"Pickup location: <address>\""
-
-    elif 'Pickup location' in body: 
+    if 'Pickup location' in body: 
         split_address = body.split('Pickup location:', 1)
         address = split_address[1]
 
@@ -108,6 +105,9 @@ def incoming_sms():
 
         ride_details = response.json
         print(ride_details)
+
+    elif 'Pickup location' not in body: 
+        msg = "Hey, welcome to Lyft! To start ordering a Lyft, text \"Pickup location: <address>\""
     
     resp.message(msg)
     return str(resp)
