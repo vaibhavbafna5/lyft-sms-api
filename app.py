@@ -111,4 +111,4 @@ def get_lat_lon(address):
     data = r.json()
     lat = data['results'][0]["geometry"]["location"]["lat"]
     lon = data['results'][0]["geometry"]["location"]["lng"]
-    return tuple(lat, lon)
+    return (lat, lon)
