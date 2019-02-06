@@ -51,6 +51,7 @@ def say_hi():
 @app.route("/sms", methods=['GET', 'POST'])
 def incoming_sms():
     """Send a dynamic reply to an incoming text message"""
+    global state
     # Get the message the user sent our Twilio number
     body = request.values.get('Body', None)
 
