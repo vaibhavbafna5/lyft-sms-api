@@ -62,7 +62,13 @@ def incoming_sms():
 
     # gets pickup location 
     if state == 'justTalking' and 'Pickup location' not in body: 
-        msg = "Hey, welcome to Lyft! To start ordering a Lyft, text 'Pickup location: [your location]'"
+        msg = "Hey, welcome to Lyft! To start ordering a Lyft, text 'Pickup location: <address>"
+        
+    if state == 'justTalking' and 'Pickup location' in body: 
+        split_address = body.split('Pickup location:', 1)
+        address = split_address[1]
+        msg = "Your address is: " + address
+        state == 'pickupLocationEntered'
     # if state == 'justTalking' and 'Pickup location:' in body:
     #     msg = ""
     #     state = 'pickupLocationEntered'
