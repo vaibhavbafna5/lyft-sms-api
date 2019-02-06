@@ -20,7 +20,11 @@ possible states:
 - driverArrived
 '''
 
-state = 'justTalking'
+class RideRequest:
+    state = 'justTalking'
+    ride_request = {}
+
+dummy_state = RideRequest()
 
 oauth_filename = 'examples/oauth2_session_store.yaml'
 with open(oauth_filename, 'r' ) as config_file:
@@ -52,7 +56,6 @@ def say_hi():
 @app.route("/sms", methods=['GET', 'POST'])
 def incoming_sms():
     """Send a dynamic reply to an incoming text message"""
-    global state
     # get the message the user sent our Twilio number
     body = request.values.get('Body', None)
 
@@ -61,14 +64,14 @@ def incoming_sms():
     msg = ""
 
     ride_request = {'ride_type': 'lyft'}
-    print("HERE: AT EVERY REQUEST: ", state)
+    print("HERE: AT EVERY REQUEST: ", dummy_state.state)
 
     # Determine the right reply for this message
 
-    if state == 'justTalking' and 'Pickup location' not in body: 
+    if dummy_state.state == 'justTalking' and 'Pickup location' not in body: 
         msg = "Hey, welcome to Lyft! To start ordering a Lyft, text \"Pickup location: <address>\""
 
-    elif state == 'justTalking' and 'Pickup location' in body: 
+    elif dummy_state.state == 'justTalking' and 'Pickup location' in body: 
         split_address = body.split('Pickup location:', 1)
         address = split_address[1]
 
@@ -78,10 +81,9 @@ def incoming_sms():
         ride_request['start_lon'] = pickup_lat_lon[1]
 
         msg = "Your pickup address is: " + address + ". Text \"Dropoff location: <address>\" to continue."
-        state = 'pickupLocationEntered'
-        print("HEY STATE HERE: ", state)
+        dummy_state.state = 'pickupLocationEntered'
 
-    elif state == 'pickupLocationEntered' and 'Dropoff location:' in body: 
+    elif dummy_state.state == 'pickupLocationEntered' and 'Dropoff location:' in body: 
         split_address = body.split('Dropoff location:', 1)
         address = split_address[1]
         print("AYYOO LOOK HERE: ", address)
