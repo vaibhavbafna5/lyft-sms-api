@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, abort, make_response
+from flask import Flask, jsonify, abort, make_response, request
 from flask_cors import CORS
 import requests
 from lyft_rides.auth import ClientCredentialGrant
@@ -10,6 +10,17 @@ from twilio.twiml.messaging_response import MessagingResponse
 
 app = Flask(__name__)
 cors = CORS(app)
+
+'''
+possible states:
+- justTalking
+- pickupLocationEntered
+- rideRequestPending
+- rideRequestAccepted
+- driverArrived
+'''
+
+state = 'justTalking'
 
 oauth_filename = 'examples/oauth2_session_store.yaml'
 with open(oauth_filename, 'r' ) as config_file:
@@ -38,6 +49,33 @@ def say_hi():
     return jsonify({"response": "Hello."})
 
 @app.route("/sms", methods=['GET', 'POST'])
+def incoming_sms():
+    """Send a dynamic reply to an incoming text message"""
+    # Get the message the user sent our Twilio number
+    body = request.values.get('Body', None)
+
+    # Start our TwiML response
+    resp = MessagingResponse()
+    msg = ""
+
+    # Determine the right reply for this message
+
+    # gets pickup location 
+    if state == 'justTalking' and 'Pickup location' not in body: 
+        msg = "Hey, welcome to Lyft! To start ordering a Lyft, text 'Pickup location: [your location]'"
+    # if state == 'justTalking' and 'Pickup location:' in body:
+    #     msg = ""
+    #     state = 'pickupLocationEntered'
+    #     break
+    # elif state == 'pickupLocationEntered' and 'Dropoff location:' in body:
+    #     msg = ""
+    #     state = "rideRequestPending"
+    #     # make request here
+    #     break
+
+    resp.message(msg)
+    return str(resp)
+
 def sms_ahoy_reply():
     """Hi cutie."""
     # Start our response
