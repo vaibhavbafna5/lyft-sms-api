@@ -94,7 +94,7 @@ def incoming_sms():
         ride_request.end_lon = dropoff_lat_lon[1]
 
         response = client.request_ride(
-            ride_type=ride_type,
+            ride_type="lyft",
             start_latitude=37.77,
             start_longitude=-122.41,
             end_latitude=37.79,
