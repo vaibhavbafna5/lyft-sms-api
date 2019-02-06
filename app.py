@@ -35,8 +35,12 @@ oauth2 = OAuth2Credential(
     client_secret=config['client_secret'],
     refresh_token=config['refresh_token']
 )
+# session = Session(oauth2)
+# client = LyftRidesClient(session)
+
 session = Session(oauth2)
 client = LyftRidesClient(session)
+client.refresh_oauth_credential()
 
 @app.route("/bio", methods=['GET'])
 def get_ridetypes(): 
