@@ -60,9 +60,9 @@ def incoming_sms():
     resp = MessagingResponse()
     msg = ""
 
+    ride_request = {'ride_type': 'lyft'}
+
     # Determine the right reply for this message
-    pickup_lat_lon = tuple()
-    dropoff_lat_lon = tuple()
 
     if state == 'justTalking' and 'Pickup location' not in body: 
         msg = "Hey, welcome to Lyft! To start ordering a Lyft, text \"Pickup location: <address>\""
@@ -73,6 +73,9 @@ def incoming_sms():
 
         # get lat long here 
         pickup_lat_lon = get_lat_lon(address)
+        ride_request['start_lat'] = pickup_lat_lon[0]
+        ride_request['start_lon'] = pickup_lat_lon[1]
+
         msg = "Your pickup address is: " + address + ". Text \"Dropoff location: <address>\" to continue."
         state = 'pickupLocationEntered'
 
@@ -82,14 +85,17 @@ def incoming_sms():
 
         #get lat long here 
         dropoff_lat_lon = get_lat_lon(address)
+        ride_request['end_lat'] = dropoff_lat_lon[0]
+        ride_request['end_lon'] = dropoff_lat_lon[1]
+
         msg = "Your dropoff address is: " + address + ". Requesting your Lyft now!"
 
         response = client.request_ride(
             ride_type="lyft",
-            start_latitude=pickup_lat_lon[0],
-            start_longitude=pickup_lat_lon[1],
-            end_latitude=dropoff_lat_lon[0],
-            end_longitude=-dropoff_lat_lon[1],
+            start_latitude=ride_request['start_lat'],
+            start_longitude=ride_request['start_lon'],
+            end_latitude=ride_request['end_lat'],
+            end_longitude=-ride_request['end_lon],
         )
 
         ride_details = response.json
@@ -105,4 +111,4 @@ def get_lat_lon(address):
     data = r.json()
     lat = data['results'][0]["geometry"]["location"]["lat"]
     lon = data['results'][0]["geometry"]["location"]["lng"]
-    return (lat, lon)
+    return tuple(lat, lon)
