@@ -95,7 +95,7 @@ def incoming_sms():
             start_latitude=ride_request['start_lat'],
             start_longitude=ride_request['start_lon'],
             end_latitude=ride_request['end_lat'],
-            end_longitude=-ride_request['end_lon],
+            end_longitude=-ride_request['end_lon'],
         )
 
         ride_details = response.json
