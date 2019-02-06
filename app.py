@@ -59,32 +59,35 @@ def incoming_sms():
     msg = ""
 
     # Determine the right reply for this message
-
     # gets pickup location 
+    
     if state == 'justTalking' and 'Pickup location' not in body: 
-        msg = "Hey, welcome to Lyft! To start ordering a Lyft, text 'Pickup location: <address>"
-        
+        msg = "Hey, welcome to Lyft! To start ordering a Lyft, text \"Pickup location: <address>\""
+
     if state == 'justTalking' and 'Pickup location' in body: 
         split_address = body.split('Pickup location:', 1)
         address = split_address[1]
-        msg = "Your address is: " + address
-        state == 'pickupLocationEntered'
-    # if state == 'justTalking' and 'Pickup location:' in body:
-    #     msg = ""
-    #     state = 'pickupLocationEntered'
-    #     break
-    # elif state == 'pickupLocationEntered' and 'Dropoff location:' in body:
-    #     msg = ""
-    #     state = "rideRequestPending"
-    #     # make request here
-    #     break
 
+        # get lat long here 
+        lat_lon = get_lat_lon(address)
+        msg = "Your pickup address is: " + lat_lon[0] + ", " + lat_lon[1] + ". Text \"Dropoff location: <address>\" to continue."
+        state == 'pickupLocationEntered'
+
+    if state == 'pickupLocationEntered' and 'Dropoff location:' in body: 
+        split_address = body.split('Dropoff location:', 1)
+        address = split_address[1]
+
+        #get lat long here 
+        lat_lon = get_lat_lon(address)
+        msg = "Your dropoff address is: " + lat_lon[0] + ", " + lat_lon[1] + ". Requesting your Lyft now!"
+        state = 'rideRequested'
+    
     resp.message(msg)
     return str(resp)
 
-def sms_ahoy_reply():
-    """Hi cutie."""
-    # Start our response
-    resp = MessagingResponse()
-    resp.message("Hi cutie")
-    return str(resp)
+def get_lat_lon(address): 
+    r = requests.get("https://maps.googleapis.com/maps/api/geocode/json?address=" + address + "&key=AIzaSyAAUTtrJ63mSvQm7aFVbOIwQYkJhBBA35o")
+    data = r.json()
+    lat = data['results'][0]["geometry"]["location"]["lat"]
+    lon = data['results'][0]["geometry"]["location"]["lng"]
+    return (lat, lon)
