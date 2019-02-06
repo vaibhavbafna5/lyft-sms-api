@@ -61,13 +61,14 @@ def incoming_sms():
     msg = ""
 
     ride_request = {'ride_type': 'lyft'}
+    print("HERE: AT EVERY REQUEST: ", state)
 
     # Determine the right reply for this message
 
     if state == 'justTalking' and 'Pickup location' not in body: 
         msg = "Hey, welcome to Lyft! To start ordering a Lyft, text \"Pickup location: <address>\""
 
-    if state == 'justTalking' and 'Pickup location' in body: 
+    elif state == 'justTalking' and 'Pickup location' in body: 
         split_address = body.split('Pickup location:', 1)
         address = split_address[1]
 
@@ -80,7 +81,7 @@ def incoming_sms():
         state = 'pickupLocationEntered'
         print("HEY STATE HERE: ", state)
 
-    if state == 'pickupLocationEntered' and 'Dropoff location:' in body: 
+    elif state == 'pickupLocationEntered' and 'Dropoff location:' in body: 
         split_address = body.split('Dropoff location:', 1)
         address = split_address[1]
         print("AYYOO LOOK HERE: ", address)
