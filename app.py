@@ -82,6 +82,7 @@ def incoming_sms():
 
         msg = "Your pickup address is: " + address + ". Text \"Dropoff location: <address>\" to continue."
         ride_request.state = 'pickupLocationEntered'
+        resp.message(msg)
 
     elif 'Dropoff location:' in body: 
         split_address = body.split('Dropoff location:', 1)
@@ -102,12 +103,15 @@ def incoming_sms():
         # )
 
         msg = "Your dropoff address is: " + address + ". Requesting your Lyft now!"
+        resp.message(msg)
 
+        msg = "Your Lyft is on its way. Look out for Tyler in a Blue Prius (BMX798)!"
+        resp.message(msg)
 
     elif 'Pickup location' not in body: 
         msg = "Hey, welcome to Lyft! To start ordering a Lyft, text \"Pickup location: <address>\""
+        resp.message(msg)
     
-    resp.message(msg)
     return str(resp)
 
 def get_lat_lon(address): 
