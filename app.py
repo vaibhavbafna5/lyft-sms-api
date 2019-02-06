@@ -22,9 +22,13 @@ possible states:
 
 class RideRequest:
     state = 'justTalking'
-    ride_request = {}
+    start_lat = 0.0
+    start_lon = 0.0
+    end_lat = 0.0
+    end_lon = 0.0
+    ride_type = "lyft"
 
-dummy_state = RideRequest()
+ride_request = RideRequest()
 
 oauth_filename = 'examples/oauth2_session_store.yaml'
 with open(oauth_filename, 'r' ) as config_file:
@@ -63,35 +67,34 @@ def incoming_sms():
     resp = MessagingResponse()
     msg = ""
 
-    ride_request = {'ride_type': 'lyft'}
-    print("HERE: AT EVERY REQUEST: ", dummy_state.state)
+    print("HERE: AT EVERY REQUEST: ", ride_request.state)
 
     # Determine the right reply for this message
 
-    if dummy_state.state == 'justTalking' and 'Pickup location' not in body: 
+    if ride_request.state == 'justTalking' and 'Pickup location' not in body: 
         msg = "Hey, welcome to Lyft! To start ordering a Lyft, text \"Pickup location: <address>\""
 
-    elif dummy_state.state == 'justTalking' and 'Pickup location' in body: 
+    elif ride_request.state == 'justTalking' and 'Pickup location' in body: 
         split_address = body.split('Pickup location:', 1)
         address = split_address[1]
 
         # get lat long here 
         pickup_lat_lon = get_lat_lon(address)
-        ride_request['start_lat'] = pickup_lat_lon[0]
-        ride_request['start_lon'] = pickup_lat_lon[1]
+        ride_request.start_lat = pickup_lat_lon[0]
+        ride_request.start_lon = pickup_lat_lon[1]
 
         msg = "Your pickup address is: " + address + ". Text \"Dropoff location: <address>\" to continue."
-        dummy_state.state = 'pickupLocationEntered'
+        ride_request.state = 'pickupLocationEntered'
 
-    elif dummy_state.state == 'pickupLocationEntered' and 'Dropoff location:' in body: 
+    elif ride_request.state == 'pickupLocationEntered' and 'Dropoff location:' in body: 
         split_address = body.split('Dropoff location:', 1)
         address = split_address[1]
         print("AYYOO LOOK HERE: ", address)
 
         #get lat long here 
         dropoff_lat_lon = get_lat_lon(address)
-        ride_request['end_lat'] = dropoff_lat_lon[0]
-        ride_request['end_lon'] = dropoff_lat_lon[1]
+        ride_request.end_lat = dropoff_lat_lon[0]
+        ride_request.end_lon = dropoff_lat_lon[1]
 
         msg = "Your dropoff address is: " + address + ". Requesting your Lyft now!"
 
@@ -99,16 +102,14 @@ def incoming_sms():
 
         response = client.request_ride(
             ride_type="lyft",
-            start_latitude=ride_request['start_lat'],
-            start_longitude=ride_request['start_lon'],
-            end_latitude=ride_request['end_lat'],
-            end_longitude=-ride_request['end_lon'],
+            start_latitude=ride_request.start_lat,
+            start_longitude=ride_request.start_lon,
+            end_latitude=ride_request.end_lat,
+            end_longitude=-ride_request.end_lon,
         )
 
         ride_details = response.json
         print(ride_details)
-
-        state = 'rideRequested'
     
     resp.message(msg)
     return str(resp)
