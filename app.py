@@ -52,7 +52,7 @@ def say_hi():
 def incoming_sms():
     """Send a dynamic reply to an incoming text message"""
     global state
-    # Get the message the user sent our Twilio number
+    # get the message the user sent our Twilio number
     body = request.values.get('Body', None)
 
     # Start our TwiML response
@@ -60,7 +60,8 @@ def incoming_sms():
     msg = ""
 
     # Determine the right reply for this message
-    # gets pickup location 
+    pickup_lat_lon = tuple()
+    dropoff_lat_lon = tuple()
 
     if state == 'justTalking' and 'Pickup location' not in body: 
         msg = "Hey, welcome to Lyft! To start ordering a Lyft, text \"Pickup location: <address>\""
@@ -70,18 +71,34 @@ def incoming_sms():
         address = split_address[1]
 
         # get lat long here 
-        lat_lon = get_lat_lon(address)
+        pickup_lat_lon = get_lat_lon(address)
         msg = "Your pickup address is: " + address + ". Text \"Dropoff location: <address>\" to continue."
-        state == 'pickupLocationEntered'
+        state = 'pickupLocationEntered'
 
     if state == 'pickupLocationEntered' and 'Dropoff location:' in body: 
         split_address = body.split('Dropoff location:', 1)
         address = split_address[1]
 
         #get lat long here 
-        lat_lon = get_lat_lon(address)
+        dropoff_lat_lon = get_lat_lon(address)
         msg = "Your dropoff address is: " + address + ". Requesting your Lyft now!"
+
+        response = client.request_ride(
+            ride_type="lyft",
+            start_latitude=pickup_lat_lon[0],
+            start_longitude=pickup_lat_lon[1],
+            end_latitude=dropoff_lat_lon[0],
+            end_longitude=-dropoff_lat_lon[1],
+        )
+
+        ride_details = response.json
+        print(ride_details)
+
         state = 'rideRequested'
+
+    
+
+    
     
     resp.message(msg)
     return str(resp)
