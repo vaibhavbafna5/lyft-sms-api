@@ -93,8 +93,6 @@ def incoming_sms():
         ride_request.end_lat = dropoff_lat_lon[0]
         ride_request.end_lon = dropoff_lat_lon[1]
 
-        msg = "Your dropoff address is: " + address + ". Requesting your Lyft now!"
-
         response = client.request_ride(
             ride_type="lyft",
             start_latitude=ride_request.start_lat,
@@ -103,8 +101,8 @@ def incoming_sms():
             end_longitude=-ride_request.end_lon,
         )
 
-        ride_details = response.json
-        print(ride_details)
+        msg = "Your dropoff address is: " + address + ". Requesting your Lyft now!"
+
 
     elif 'Pickup location' not in body: 
         msg = "Hey, welcome to Lyft! To start ordering a Lyft, text \"Pickup location: <address>\""
