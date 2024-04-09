@@ -3,8 +3,8 @@ from lyft_rides.session import Session
 from lyft_rides.auth import AuthorizationCodeGrant
 from lyft_rides.client import LyftRidesClient
 
-client_id = "PxRATSRJrP4l"
-client_secret = "ksbAnrp0udSX-XwicMaDf8mdK6f4fRS3"
+client_id = "REDACTED"
+client_secret = "REDACTED"
 
 auth_flow = AuthorizationCodeGrant(
     client_id,
